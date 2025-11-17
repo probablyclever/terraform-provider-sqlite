@@ -29,11 +29,10 @@ checksum:
 signs:
   - artifacts: checksum
     cmd: cosign
-    signature: "{{ .ArtifactPath }}.sig"
     args:
       - sign-blob
       - "--yes"
-      - "--output-signature={{ .Signature }}"
+      - "--output-signature={{ .ArtifactPath }}.sig"
       - "{{ .ArtifactPath }}"
 
 release:
