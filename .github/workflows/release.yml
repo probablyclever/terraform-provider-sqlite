@@ -1,0 +1,24 @@
+name: release
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  id-token: write   # for cosign keyless
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: {go-version: '1.25.4'}
+      - name: Run tests
+        run: go test ./...
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+      - name: Release
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          args: release --clean
