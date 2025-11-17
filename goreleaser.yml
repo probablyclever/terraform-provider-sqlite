@@ -17,9 +17,8 @@ builds:
 
 archives:
   - id: archive
-    builds: [provider]
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    format: zip
+    formats: [zip]
     files:
       - LICENSE
 
@@ -29,11 +28,12 @@ checksum:
 signs:
   - artifacts: checksum
     cmd: cosign
+    signature: "${artifact}.sigstore.json"
     args:
       - sign-blob
       - "--yes"
-      - "--output-signature={{ .ArtifactPath }}.sig"
-      - "{{ .ArtifactPath }}"
+      - "--bundle=${signature}"
+      - "${artifact}"
 
 release:
   draft: false
