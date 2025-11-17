@@ -27,13 +27,9 @@ checksum:
 
 signs:
   - artifacts: checksum
-    cmd: cosign
-    signature: "${artifact}.sigstore.json"
-    args:
-      - sign-blob
-      - "--yes"
-      - "--bundle=${signature}"
-      - "${artifact}"
+    signature: "${artifact}.sig"
+    args: ["--batch", "--yes", "--local-user", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}"]
+    cmd: gpg
 
 release:
   draft: false
