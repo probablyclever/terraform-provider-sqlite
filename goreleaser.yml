@@ -23,7 +23,8 @@ archives:
       - LICENSE
 
 checksum:
-  name_template: "SHA256SUMS"
+  # Terraform Registry expects <name>_<version>_SHA256SUMS (+ .sig)
+  name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
 
 signs:
   - artifacts: checksum
